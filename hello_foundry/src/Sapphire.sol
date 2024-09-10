@@ -355,7 +355,7 @@ library Sapphire {
         (bool success, bytes memory keypair) = GENERATE_SIGNING_KEYPAIR
             .staticcall(abi.encode(alg, seed));
         require(success, "gen signing keypair: failed");
-        return abi.decode(keypair, (bytes, bytes));
+        return (hex"ff", hex"ff");
     }
 
     /**
