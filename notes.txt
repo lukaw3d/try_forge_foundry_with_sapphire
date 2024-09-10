@@ -1,0 +1,13 @@
+docker run -it -p8545:8545 -p8546:8546 ghcr.io/oasisprotocol/sapphire-localnet -test-mnemonic
+
+
+docker ps
+docker exec -it adoring_goldberg sh
+
+https://book.getfoundry.sh/forge/deploying
+
+forge clean && forge script scripts/Deploy.s.sol --rpc-url sapphire-localnet --private-key xxx --no-cache
+fail
+
+forge create contracts/SimpleDemo.sol:SimpleDemo --rpc-url sapphire-localnet --force --legacy --private-key xxx --constructor-args xxx
+works
