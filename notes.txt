@@ -48,3 +48,12 @@ gave up.
 
 docker system prune
 
+################################################
+
+
+
+docker run -it -p8545:8545 -p8546:8546 ghcr.io/oasisprotocol/sapphire-localnet -test-mnemonic
+
+curl -L https://foundry.paradigm.xyz | bash
+new terminal
+foundryup
