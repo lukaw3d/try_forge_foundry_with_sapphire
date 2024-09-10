@@ -15,8 +15,9 @@ contract RANDOM_BYTES_MOCK {
 contract GENERATE_SIGNING_KEYPAIR_MOCK {
     fallback(bytes calldata) external returns (bytes memory) {
         bool success = true;
-        bytes memory output = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        return abi.encode(success, abi.encode(output, output));
+        bytes memory publicKey = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        bytes memory secretKey = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        return abi.encode(success, abi.encode(publicKey, secretKey));
     }
 }
 
