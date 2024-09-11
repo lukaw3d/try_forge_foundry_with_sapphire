@@ -7,6 +7,7 @@ contract Counter {
 
     constructor() {
         bytes memory sk = Sapphire.randomBytes(32, "");
+        Sapphire.generateSigningKeyPair(Sapphire.SigningAlg.Secp256k1PrehashedKeccak256, sk);
     }
 
     function setNumber(uint256 newNumber) public {
