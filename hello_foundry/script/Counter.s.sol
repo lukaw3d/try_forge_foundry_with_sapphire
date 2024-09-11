@@ -5,19 +5,6 @@ import {Script, console} from "forge-std/Script.sol";
 import {Counter} from "../src/Counter.sol";
 import {Sapphire} from "../src/Sapphire.sol";
 
-contract RANDOM_BYTES_MOCK {
-    function jIUTh(bytes calldata) external view returns (bytes memory) {
-        bytes memory output = "1bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabc1";
-        return output;
-    }
-}
-contract GENERATE_SIGNING_KEYPAIR_MOCK {
-    function jIUTh(bytes calldata) external view returns (bytes memory) {
-        bytes memory output = abi.encode(bytes("abc"), bytes("def"));
-        return output;
-    }
-}
-
 
 contract CounterScript is Script {
     // Oasis-specific, confidential precompiles
@@ -53,11 +40,17 @@ contract CounterScript is Script {
     Counter public counter;
 
     function setUp() public {
-        RANDOM_BYTES_MOCK mock1 = new RANDOM_BYTES_MOCK();
-        vm.etch(RANDOM_BYTES, address(mock1).code);
+        vm.mockCall(
+            RANDOM_BYTES,
+            abi.encodeWithSelector(bytes4(0)),
+            abi.encode("1bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabc1")
+        );
 
-        GENERATE_SIGNING_KEYPAIR_MOCK mock2 = new GENERATE_SIGNING_KEYPAIR_MOCK();
-        vm.etch(GENERATE_SIGNING_KEYPAIR, address(mock2).code);
+        vm.mockCall(
+            GENERATE_SIGNING_KEYPAIR,
+            abi.encodeWithSelector(bytes4(0)),
+            abi.encode(abi.encode(bytes("abc"), bytes("def")))
+        );
     }
 
     function run() public {
