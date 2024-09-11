@@ -6,11 +6,10 @@ import {Counter} from "../src/Counter.sol";
 import {Sapphire} from "../src/Sapphire.sol";
 
 contract RANDOM_BYTES_MOCK {
-    // https://www.4byte.directory/signatures/?bytes4_signature=0x00000000&page=2
-    function jIUTh(bytes calldata) external returns (bool, bytes memory) {
+    fallback(bytes calldata) external returns (bytes memory) {
         bool success = true;
-        bytes memory output = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        return (success, output);
+        bytes memory output = "1bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabc1";
+        return output;
     }
 }
 contract GENERATE_SIGNING_KEYPAIR_MOCK {
