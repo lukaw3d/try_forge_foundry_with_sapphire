@@ -17,7 +17,7 @@ contract GENERATE_SIGNING_KEYPAIR_MOCK {
         bool success = true;
         bytes memory publicKey = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
         bytes memory secretKey = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        return abi.encode(success, abi.encode(publicKey, secretKey));
+        return abi.encode(publicKey, secretKey);
     }
 }
 
