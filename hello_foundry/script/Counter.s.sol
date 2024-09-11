@@ -6,13 +6,13 @@ import {Counter} from "../src/Counter.sol";
 import {Sapphire} from "../src/Sapphire.sol";
 
 contract RANDOM_BYTES_MOCK {
-    fallback(bytes calldata) external returns (bytes memory) {
+    function jIUTh(bytes calldata) external view returns (bytes memory) {
         bytes memory output = "1bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabc1";
         return output;
     }
 }
 contract GENERATE_SIGNING_KEYPAIR_MOCK {
-    fallback(bytes calldata) external returns (bytes memory) {
+    function jIUTh(bytes calldata) external view returns (bytes memory) {
         bytes memory output = abi.encode(bytes("abc"), bytes("def"));
         return output;
     }

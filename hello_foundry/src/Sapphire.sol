@@ -348,12 +348,12 @@ library Sapphire {
     function generateSigningKeyPair(SigningAlg alg, bytes memory seed)
         internal
         view
-        returns (bytes memory)
+        returns (bytes memory publicKey, bytes memory secretKey)
     {
         (bool success, bytes memory keypair) = GENERATE_SIGNING_KEYPAIR
             .staticcall(abi.encode(alg, seed));
         require(success, "gen signing keypair: failed");
-        return keypair;
+        return abi.decode(keypair, (bytes, bytes));
     }
 
     /**
