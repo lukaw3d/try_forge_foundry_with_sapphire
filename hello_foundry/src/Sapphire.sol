@@ -344,18 +344,16 @@ library Sapphire {
      * @param alg The signing alg for which to generate a keypair.
      * @param seed The seed to use for generating the key pair. You can use the
      * `randomBytes` method if you don't already have a seed.
-     * @return publicKey The public half of the keypair.
-     * @return secretKey The secret half of the keypair.
      */
     function generateSigningKeyPair(SigningAlg alg, bytes memory seed)
         internal
         view
-        returns (bytes memory publicKey, bytes memory secretKey)
+        returns (bytes memory)
     {
         (bool success, bytes memory keypair) = GENERATE_SIGNING_KEYPAIR
             .staticcall(abi.encode(alg, seed));
         require(success, "gen signing keypair: failed");
-        return abi.decode(keypair, (bytes, bytes));
+        return keypair;
     }
 
     /**

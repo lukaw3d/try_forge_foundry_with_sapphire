@@ -7,19 +7,14 @@ import {Sapphire} from "../src/Sapphire.sol";
 
 contract RANDOM_BYTES_MOCK {
     fallback(bytes calldata) external returns (bytes memory) {
-        bool success = true;
         bytes memory output = "1bcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabc1";
         return output;
     }
 }
 contract GENERATE_SIGNING_KEYPAIR_MOCK {
-    // https://www.4byte.directory/signatures/?bytes4_signature=0x00000000&page=2
-    function jIUTh(bytes calldata) external returns (bool, bytes memory) {
-        bool success = true;
-        bytes memory publicKey = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        bytes memory secretKey = hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-        bytes memory output = abi.encode(publicKey, secretKey);
-        return (success, output);
+    fallback(bytes calldata) external returns (bytes memory) {
+        bytes memory output = abi.encode(bytes("abc"), bytes("def"));
+        return output;
     }
 }
 
