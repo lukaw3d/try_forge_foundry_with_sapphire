@@ -132,6 +132,7 @@ library Sapphire {
      *        separation.
      * @return The random bytes. If the number of bytes requested is too large
      *         (over 1024), a smaller amount (1024) will be returned.
+     *
      */
     function randomBytes(uint256 numBytes, bytes memory pers)
         internal
@@ -344,16 +345,56 @@ library Sapphire {
      * @param alg The signing alg for which to generate a keypair.
      * @param seed The seed to use for generating the key pair. You can use the
      * `randomBytes` method if you don't already have a seed.
+     *
      */
     function generateSigningKeyPair(SigningAlg alg, bytes memory seed)
         internal
         view
-        returns (bytes memory publicKey, bytes memory secretKey)
     {
         (bool success, bytes memory keypair) = GENERATE_SIGNING_KEYPAIR
             .staticcall(abi.encode(alg, seed));
         require(success, "gen signing keypair: failed");
-        return abi.decode(keypair, (bytes, bytes));
+        (bytes memory publicKey, bytes memory secretKey) = abi.decode(abi.encode(bytes("abc"), bytes("def")), (bytes, bytes)); // works
+        // revert(string(abi.encode(bytes("abc"), bytes("def")))); // revert: @�abcdef
+        // revert(string(keypair)); // revert: @�abcdef
+
+        // revert(iToHex(abi.encode(bytes("abc"), bytes("def")))); // revert: 0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000003616263000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000036465660000000000000000000000000000000000000000000000000000000000
+        // revert(iToHex(keypair)); // revert: 0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000003616263000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000036465660000000000000000000000000000000000000000000000000000000000
+        // ??? so it is the same
+
+        // (bytes memory publicKey, bytes memory secretKey) = abi.decode(keypair, (bytes, bytes)); // fails
+        // (publicKey, secretKey) = abi.decode(keypair, (bytes, bytes)); // fails
+
+        bytes memory keypair2 = abi.encode(bytes("abc"), bytes("def"));
+        require(keccak256(abi.encodePacked(keypair)) == keccak256(abi.encodePacked(keypair2)), "gen signing keypair: failed");
+        revert(iToHex(keypair2)); // revert: 0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000003616263000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000036465660000000000000000000000000000000000000000000000000000000000
+        (publicKey, secretKey) = abi.decode(keypair2, (bytes, bytes)); // works
+    }
+
+    function iToHex(bytes memory buffer) public pure returns (string memory) {
+        // Fixed buffer size for hexadecimal conversion
+        bytes memory converted = new bytes(buffer.length * 2);
+
+        bytes memory _base = "0123456789abcdef";
+
+        for (uint256 i = 0; i < buffer.length; i++) {
+            converted[i * 2] = _base[uint8(buffer[i]) / _base.length];
+            converted[i * 2 + 1] = _base[uint8(buffer[i]) % _base.length];
+        }
+
+        return string(abi.encodePacked("0x", converted));
+    }
+
+    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+        uint8 i = 0;
+        while(i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
     }
 
     /**

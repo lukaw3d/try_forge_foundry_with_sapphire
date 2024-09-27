@@ -49,7 +49,7 @@ contract CounterScript is Script {
         vm.mockCall(
             GENERATE_SIGNING_KEYPAIR,
             abi.encodeWithSelector(bytes4(0)),
-            abi.encode(abi.encode(bytes("abc"), bytes("def")))
+            abi.encode(bytes("abc"), bytes("def"))
         );
     }
 
